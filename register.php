@@ -3,7 +3,12 @@
 $database="pwsinlogsysteem";
 $link = mysqli_connect("localhost",'root','usbw',$database) 
     or die (mysqli_connect_error());
+if ($link -> connect_errno) {
+  echo "Failed to connect to MySQL: " . $link -> connect_error;
+  exit();
+}
  ?>
+
 <!--- HTML code: form's --->
 <form method="post">
     <input type="hidden" name="id">
@@ -27,7 +32,7 @@ $link = mysqli_connect("localhost",'root','usbw',$database)
                 $emailadres  = mysqli_real_escape_string($link,$_POST['emailadres']); 
                 $telefoonnummer  = mysqli_real_escape_string($link,$_POST['telefoonnummer']); 
                 $wachtwoord = mysqli_real_escape_string($link,$_POST['wachtwoord']); 
-                // Validate password strength
+                /* De 'requirements' van het wachtwoord checken. */
                 $uppercase = preg_match('@[A-Z]@', $wachtwoord);
                 $lowercase = preg_match('@[a-z]@', $wachtwoord);
                 $number    = preg_match('@[0-9]@', $wachtwoord);
@@ -44,10 +49,15 @@ $link = mysqli_connect("localhost",'root','usbw',$database)
             if(mysqli_num_rows($select)) {
                 exit('Dit emailadres is al in gebruik.');
             }
-        /* Ingevoerde velden in de database zetten. + encripten van het wachtwoord */
-        $result = mysqli_query($link," INSERT INTO `account`(`id`, `voornaam`, `achternaam`, `emailadres`, `telefoonnummer`, `wachtwoord`) VALUES ('$id','$voornaam','$achternaam','$emailadres','$telefoonnummer','".password_hash($wachtwoord, PASSWORD_BCRYPT)."')") 
-    or die (mysqli_error($link));
+        /* Ingevoerde velden in de database zetten. + encripten van het wachtwoord + tegen sql injecties.*/
+        $result = $link -> prepare(" INSERT INTO `account`(`id`, `voornaam`, `achternaam`, `emailadres`, `telefoonnummer`, `wachtwoord`) VALUES (?,?,?,?,?,'".password_hash($wachtwoord, PASSWORD_BCRYPT)."')")or exit(mysqli_error());
+        $result -> bind_param("sssss", $id, $voornaam, $achternaam, $emailadres, $telefoonnummer);
+                    $result->execute();
+                    $result->store_result();
+    
             echo "De gebruiker is aangemaakt.";
+            $result -> close();
+            $link -> close();
         /* echo als de wachtwoorden niet gelijk aan elkaar zijn */
         }
         }
@@ -55,4 +65,5 @@ $link = mysqli_connect("localhost",'root','usbw',$database)
             echo "<p style='color:red;'>De gekozen wachtwoorden zijn niet gelijk aan elkaar.</p>";
         }
     }
+
  ?>
