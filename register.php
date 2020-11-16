@@ -10,16 +10,29 @@ if ($link -> connect_errno) {
  ?>
 
 <!--- HTML code: form's --->
-<form method="post">
-    <input type="hidden" name="id">
-    Voornaam:<input type="text" name="voornaam" required><br>
-    Achternaam:<input type="text" name="achternaam" required><br>
-    Emailadres:<input type="text" name="emailadres" required><br>
-    Telefoonnummer:<input type="text" name="telefoonnummer" required><br>
-    Wachtwoord:<input type="password" name="wachtwoord" required><br>
-    Herhaal wachtwoord:<input type="password" name="wachtwoord2" required><br>
-    <input type="submit" name="verzend" value="verzend">
-</form>
+<head>
+    <link rel="stylesheet" href="style.css">
+    <body>
+        <div class="login-page">
+        <div class="form">
+      <h2>Registreer</h2><br>
+      <form method="post" class="login-form">
+        <input type="hidden" name="id">
+        <input type="text" name="voornaam" placeholder="voornaam" required><br>
+        <input type="text" name="achternaam" placeholder="achternaam" required><br>
+        <input type="text" name="emailadres" placeholder="emailadres" required><br>
+        <input type="text" name="telefoonnummer" placeholder="telefoonnummer" required><br>
+        <input type="password" name="wachtwoord" placeholder="wachtwoord" required><br>
+        <input type="password" name="wachtwoord2" placeholder="herhaal wachtwoord" required><br>
+        <input class="button" type="submit" name="verzend" value="registreer">
+          <p class="message">Already registered? <a href="http://localhost/pws%20inlogsysteem/login.php">Sign In</a></p>
+    </form>
+      
+  </div>
+</div>
+    
+    </body>
+</head>
  <?php
     /* Als er op de button 'verzend' geklikt is en wachtwoord komt overeen met wachtwoord2 dan kan je verder */
     if(isset($_POST['verzend'])){
