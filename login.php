@@ -5,12 +5,25 @@ $link = mysqli_connect("localhost",'root','usbw',$database)
     or die (mysqli_connect_error());
 ?>
 <!--- HTML code: form's --->
-<form method="post">
+<head>
+    <link rel="stylesheet" href="style.css">
+    <body>
+    <div class="login-page">
+    <div class="form">
+    <h2>Login</h2><br>
+    <form method="post" class="login-form">
     <input type="hidden" name="id">
-    Emailadres:<input type="text" name="emailadres" required><br>
-    Wachtwoord:<input type="password" name="wachtwoord" required><br>
+    <input type="text" name="emailadres" placeholder="emailadres" required><br>
+    <input type="password" name="wachtwoord" placeholder="wachtwoord" required><br>
+<!-- VOOR DE RECAPTCHA VEILIGHEID GEBRUIKER --->
     <input type="submit" name="login" value="login">
-</form>
+           <!-- class="g-recaptcha" data-sitekey="HIER MOET NOG EEN SITEKEY AANGEMAAKT WORDEN" data-callback='onSubmit' data-action='submit' -->
+    </form>
+      <p class="message">Not registered? <a href="http://localhost/pws%20inlogsysteem/register.php">Create an account</a></p>
+    </div>
+    </div>
+    </body>
+</head>
 <?php
 /* Kijken of je een emailadres en wachtwoord hebt opgegeven */
 if (!empty($_POST['emailadres']) and !empty($_POST['wachtwoord'])) {
@@ -49,3 +62,9 @@ if (isset($_POST['login'])) {
 }
 
 ?>
+<script src="https://www.google.com/recaptcha/api.js"></script>
+<script>
+   function onSubmit(token) {
+     document.getElementById("demo-form").submit();
+   }
+ </script>
