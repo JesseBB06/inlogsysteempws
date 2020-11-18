@@ -6,24 +6,24 @@ $link = mysqli_connect("localhost",'root','usbw',$database)
 ?>
 <!--- HTML code: form's --->
 <head>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style2.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet"> 
     <body>
     <div class="login-page">
     <div class="form">
-    <h2>Login</h2><br>
+    <h2>Log in</h2>
+        <p class="message">Om toegang te krijgen tot ons profielwerkstuk over inlogsystemen.</p><br>
     <form method="post" class="login-form">
     <input type="hidden" name="id">
-    <input type="text" name="emailadres" placeholder="emailadres" required><br>
-    <input type="password" name="wachtwoord" placeholder="wachtwoord" required><br>
+    <input type="text" id="emailadres" name="emailadres" placeholder="emailadres" required><br>
+    <input type="password" id="wachtwoord" name="wachtwoord" placeholder="wachtwoord" required><br><br>
 <!-- VOOR DE RECAPTCHA VEILIGHEID GEBRUIKER --->
-    <input type="submit" name="login" value="login">
+    <input class="button" type="submit" name="login" value="Login">
            <!-- class="g-recaptcha" data-sitekey="HIER MOET NOG EEN SITEKEY AANGEMAAKT WORDEN" data-callback='onSubmit' data-action='submit' -->
-    </form>
-      <p class="message">Not registered? <a href="http://localhost/pws%20inlogsysteem/register.php">Create an account</a></p>
-    </div>
-    </div>
-    </body>
-</head>
+        <p class="message">Wachtwoord vergeten? <a href="http://localhost/pws%20inlogsysteem/wachtwoordvergeten.php">Klik hier</a></p>
+      <p class="message">Nog niet geregistreerd? <a href="http://localhost/pws%20inlogsysteem/register.php">Maak een account</a></p>
+        </form>
 <?php
 /* Kijken of je een emailadres en wachtwoord hebt opgegeven */
 if (!empty($_POST['emailadres']) and !empty($_POST['wachtwoord'])) {
@@ -49,15 +49,15 @@ if (isset($_POST['login'])) {
 
     }else {
                 /* wachtwoord niet juist? >ook geen session */
-                echo "Wachtwoord en/of email is incorrect.";
+                echo "<p style='color:red;'><br>Wachtwoord en/of emailadres zijn incorrect.</p>";
                 
     }
         }else{
-            echo "Wachtwoord en/of email is incorrect.";
+            echo "<p style='color:red;'><br>Wachtwoord en/of emailadres zijn incorrect.</p>";
         }
     
     }else{
-    echo "Voer een geldig emailadres en/of wachtwoord in.";
+    echo "<p style='color:red;'><br>Voer een geldig emailadres en/of wachtwoord in.</p>";
 }
 }
 
@@ -68,3 +68,12 @@ if (isset($_POST['login'])) {
      document.getElementById("demo-form").submit();
    }
  </script>
+        
+        </div>
+        <div class="form">
+            <p>&copy; 2020 - Gemaakt door: Toine van Wonderen & Jesse Blom<br> (Jan Van Egmond Lyceum, Purmerend)<br> klas: 6 vwo.</p><br>
+                  <p>Begeleider: MLI - Menno Merlijn</p>
+        </div>
+    </div>
+    </body>
+</head>
