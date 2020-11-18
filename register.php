@@ -11,28 +11,23 @@ if ($link -> connect_errno) {
 
 <!--- HTML code: form's --->
 <head>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style2.css">
     <body>
         <div class="login-page">
         <div class="form">
-      <h2>Registreer</h2><br>
+      <h2>Registreren</h2><br>
       <form method="post" class="login-form">
         <input type="hidden" name="id">
-        <input type="text" name="voornaam" placeholder="voornaam" required><br>
-        <input type="text" name="achternaam" placeholder="achternaam" required><br>
-        <input type="text" name="emailadres" placeholder="emailadres" required><br>
-        <input type="text" name="telefoonnummer" placeholder="telefoonnummer" required><br>
-        <input type="password" name="wachtwoord" placeholder="wachtwoord" required><br>
-        <input type="password" name="wachtwoord2" placeholder="herhaal wachtwoord" required><br>
-        <input class="button" type="submit" name="verzend" value="registreer">
-          <p class="message">Already registered? <a href="http://localhost/pws%20inlogsysteem/login.php">Sign In</a></p>
-    </form>
-      
-  </div>
-</div>
+        <input type="text" name="voornaam" placeholder="Voornaam" required><br>
+        <input type="text" name="achternaam" placeholder="Achternaam" required><br>
+        <input type="text" name="emailadres" placeholder="Emailadres" required><br>
+        <input type="text" name="telefoonnummer" placeholder="Telefoonnummer" required><br>
+        <input type="password" name="wachtwoord" placeholder="Wachtwoord" minlength="8" required><br>
+        <input type="password" name="wachtwoord2" placeholder="Herhaal wachtwoord" minlength="8" required><br><br>
+        <input class="button" type="submit" name="verzend" value="Maak account aan">
+          <p class="message">Al een account aangemaakt? <a href="http://localhost/pws%20inlogsysteem/login.php">Log in</a></p>
+           </form>
     
-    </body>
-</head>
  <?php
     /* Als er op de button 'verzend' geklikt is en wachtwoord komt overeen met wachtwoord2 dan kan je verder */
     if(isset($_POST['verzend'])){
@@ -52,15 +47,15 @@ if ($link -> connect_errno) {
                 $specialChars = preg_match('@[^\w]@', $wachtwoord);
 
                 if(!$uppercase || !$lowercase || !$number || !$specialChars || strlen($wachtwoord) < 8) {
-                    echo "<p style='color:red;'>Je wachtwoord moet minimaal 8 tekens lang zijn, minimaal één hoofdletter, één cijfer en één speciaal teken bevatten.</p>";
+                    echo "<p style='color:red;'><br>Je wachtwoord moet minimaal 8 tekens lang zijn, minimaal één hoofdletter, één cijfer en één speciaal teken bevatten.</p>";
                 }else{
             /* Check of het emailadres een geldig emailadres is en check of het emailadres al bekend is in de database. */
             if(!filter_var($_POST['emailadres'], FILTER_VALIDATE_EMAIL)) {
-                exit('Dit is een niet geldig emailadres.');
+                exit("<p style='color:red;'><br>Dit emailadres staan wij niet toe, omdat het geen geschikt emailadres is.</p>");
             }
             $select = mysqli_query($link, "SELECT `emailadres` FROM `account` WHERE `emailadres` = '".$_POST['emailadres']."'") or exit(mysqli_error());
             if(mysqli_num_rows($select)) {
-                exit('Dit emailadres is al in gebruik.');
+                exit("<p style='color:red;'><br>Dit emailadres is bij ons al in gebruik.</p>");
             }
         /* Ingevoerde velden in de database zetten. + encripten van het wachtwoord + tegen sql injecties.*/
         $result = $link -> prepare(" INSERT INTO `account`(`id`, `voornaam`, `achternaam`, `emailadres`, `telefoonnummer`, `wachtwoord`) VALUES (?,?,?,?,?,'".password_hash($wachtwoord, PASSWORD_BCRYPT)."')")or exit(mysqli_error());
@@ -68,15 +63,22 @@ if ($link -> connect_errno) {
                     $result->execute();
                     $result->store_result();
     
-            echo "De gebruiker is aangemaakt.";
+            echo "<p style='color:green;'><br>Je account is aangemaakt. Er is een mail naar je emailadres verstuurd voor verrificatie.</p>";
             $result -> close();
             $link -> close();
         /* echo als de wachtwoorden niet gelijk aan elkaar zijn */
         }
         }
     }else{
-            echo "<p style='color:red;'>De gekozen wachtwoorden zijn niet gelijk aan elkaar.</p>";
+            echo "<p style='color:red;'><br>De gekozen wachtwoorden zijn niet gelijk aan elkaar, probeer opnieuw.</p>";
         }
     }
 
  ?>
+          
+  </div>
+              
+</div>
+    
+    </body>
+</head>
