@@ -25,43 +25,31 @@ $link = mysqli_connect("localhost",'root','usbw',$database)
       <p class="message">Nog niet geregistreerd? <a href="http://localhost/pws%20inlogsysteem/register.php">Maak een account</a></p>
         </form>
 <?php
-/* Kijken of je een emailadres en wachtwoord hebt opgegeven */
-if (!empty($_POST['emailadres']) and !empty($_POST['wachtwoord'])) {
 if (isset($_POST['login'])) {
 
-    
-        /* variabeles aanmaken voor de veiligheid */
         $emailadres = mysqli_real_escape_string($link, $_POST['emailadres']);
         $wachtwoord = mysqli_real_escape_string($link, $_POST['wachtwoord']);
-        /* Kijken met welk emailadres we te maken hebben */
-        $result = mysqli_query($link, "SELECT * FROM account WHERE `emailadres`='$emailadres' LIMIT 1");
-        $user = mysqli_fetch_assoc($result);
-        /* Kijken of het emailadres gelijk staat met het wachtwoord van dat emailadres */   
+
         $result = mysqli_query($link
-            , "SELECT wachtwoord FROM `account` WHERE `emailadres`='$emailadres' LIMIT 1");
-        $row = mysqli_fetch_array($result);
-        $hash = $row['wachtwoord'];
-        if (count($user)) { /* kijken of er data zit in $user als dat zo is ga je verder. */
-            if (password_verify($wachtwoord, $hash)) {/* Alle user gegevens zetten we in de session zodat je erg makkelijk gegevens van de user kan tonen zonder de database te hoeven gebruiken. */    
-        $_SESSION['login'] = true;
-                echo "je bent ingelogd";
+            , "SELECT * FROM account WHERE `emailadres`='$emailadres' LIMIT 1"
+        );
+        $user = mysqli_fetch_assoc($result);
+        $hash = $user['wachtwoord'];
+        
+        if (count($user)) { 
+            if (password_verify($wachtwoord, $hash)) {
+                
+                $_SESSION['login'] = true;
                 header("location: index.php");
 
-    }else {
-                /* wachtwoord niet juist? >ook geen session */
-                echo "<p style='color:red;'><br>Wachtwoord en/of emailadres zijn incorrect.</p>";
-                
-    }
-        }else{
+            } else {
+               echo "<p style='color:red;'><br>Wachtwoord en/of emailadres zijn incorrect.</p>";
+            }
+        } else {
             echo "<p style='color:red;'><br>Wachtwoord en/of emailadres zijn incorrect.</p>";
         }
-    
-    }else{
-    echo "<p style='color:red;'><br>Voer een geldig emailadres en/of wachtwoord in.</p>";
-}
-}
-
-?>
+    }
+    ?>
 <script src="https://www.google.com/recaptcha/api.js"></script>
 <script>
    function onSubmit(token) {
