@@ -10,7 +10,7 @@ $type = $_GET['type'];
 $show = false;
 if ($type == 'wachtwoord') {
     ?>
-
+ 
     <head>
     <link rel="stylesheet" href="style2.css">
     <body>
