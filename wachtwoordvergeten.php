@@ -5,7 +5,7 @@ $link = mysqli_connect("localhost",'root','usbw',$database)
     or die (mysqli_connect_error());
 ?>
 <?php
-include "functions.php";
+include "functions.php"; 
 if (isset($_POST['reset'])) {
     $email = mysqli_real_escape_string($link, $_POST['email']);
     wachtwoordvergeten($email);
