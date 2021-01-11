@@ -132,5 +132,11 @@ input#wachtwoord{
 input#wachtwoord:focus {
     background-image:none;
     text-indent:0px
-    }
+}
+.warning{
+    padding-bottom: 1rem;
+    font-family: 'Merriweather Sans', sans-serif;
+    font-size: 14px;
+    color: red;
+}
 
