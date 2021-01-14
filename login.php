@@ -19,33 +19,41 @@ if(isset($_POST['terug'])){
     }
 }
 if (isset($_POST['login'])) {
-    //ReCaptcha
-    if(isset($_POST['g-recaptcha-response']) && !empty($_POST['g-recaptcha-response']))
-      {
-            $secret = '6LfYnigaAAAAAJry6gpl0xbxdqOLWN5WpIlbK65s';
-            $verifyResponse = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret='.$secret.'&response='.$_POST['g-recaptcha-response']);
-            $responseData = json_decode($verifyResponse);
-            if($responseData->success)
-            {
                 if($_SESSION['stap'] == 1){
-                    $emailadres = mysqli_real_escape_string($link, $_POST['emailadres']);
-                    $wachtwoord = mysqli_real_escape_string($link, $_POST['wachtwoord']);
+                    //ReCaptcha
+                    if(isset($_POST['g-recaptcha-response']) && !empty($_POST['g-recaptcha-response']))
+                      {
+                            $secret = '6LfYnigaAAAAAJry6gpl0xbxdqOLWN5WpIlbK65s';
+                            $verifyResponse = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret='.$secret.'&response='.$_POST['g-recaptcha-response']);
+                            $responseData = json_decode($verifyResponse);
+                            if($responseData->success)
+                            {
+                                $emailadres = mysqli_real_escape_string($link, $_POST['emailadres']);
+                                $wachtwoord = mysqli_real_escape_string($link, $_POST['wachtwoord']);
 
-                    $result = mysqli_query($link
-                        , "SELECT * FROM account WHERE `emailadres`='$emailadres' LIMIT 1"
-                    );
-                    $user = mysqli_fetch_assoc($result);
-                    $hash = $user['wachtwoord'];
-                    $_SESSION['secret'] = $user['secretKey'];
+                                $result = mysqli_query($link
+                                    , "SELECT * FROM account WHERE `emailadres`='$emailadres' LIMIT 1"
+                                );
+                                $user = mysqli_fetch_assoc($result);
+                                $hash = $user['wachtwoord'];
+                                $_SESSION['secret'] = $user['secretKey'];
 
-                    if (count($user)) { 
-                        if (password_verify($wachtwoord, $hash)) {
-                            $_SESSION['stap'] = 2;
-                        }else {
-                            $warning = "Wachtwoord is incorrect.";
-                        }
-                    }else {
-                        $warning = "emailadres is incorrect.";
+                                if (count($user)) { 
+                                    if (password_verify($wachtwoord, $hash)) {
+                                        $_SESSION['stap'] = 2;
+                                    }else {
+                                        $warning = "Wachtwoord is incorrect.";
+                                    }
+                                }else {
+                                    $warning = "emailadres is incorrect.";
+                                }
+                            }
+                            else
+                            {
+                                $warning = 'Robot verification failed, please try again.';
+                            }
+                       }else{
+                        $warning = "De reCAPTCHA is nog niet geverifieerd";
                     }
                 }else if($_SESSION['stap'] == 2){
                     $result = $tfa->verifyCode($_SESSION['secret'], $_POST['code']);
@@ -55,14 +63,6 @@ if (isset($_POST['login'])) {
                         header("location: profiel.php");
                     }
                 }
-            }
-            else
-            {
-                $warning = 'Robot verification failed, please try again.';
-            }
-       }else{
-        $warning = "De reCAPTCHA is nog niet geverifieerd";
-    }
 }else{
 if(!isset($_SESSION['stap']) || $_SESSION['stap'] != 2){
         $_SESSION['stap'] = 1;
