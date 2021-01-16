@@ -1,36 +1,28 @@
 <?php
-session_start();
-include 'vendor\autoload.php';
+include 'connect.php';
 
-use PragmaRX\Google2FA\Google2FA;
-    
-$google2fa = new Google2FA();
-
-$tfa = new RobThree\Auth\TwoFactorAuth('Pws');
-
-$secret = $tfa->createSecret();
-
-$qrCodeUrl = $google2fa->getQRCodeUrl(
-    'pws',
-    'pws@gmail.com',
-    $secret
-);
-
-
-if(isset($_POST['submit'])){
-    $result = $tfa->verifyCode($_SESSION['secret'], $_POST['code']);
-    if($result){
-        echo "Success";
+   if (isset($_SESSION['login']) and $_SESSION['login']) {
+       return true;
     }else{
-        echo "Wrong";
-    }
-}else{
-    $_SESSION['secret'] = $secret;
+        header("location: login.php");
+}
+if(isset($_POST['logout'])){
+    $_SESSION['login'] = false;
+    header('location: login.php');
 }
 ?>
-
-<p><?php echo "<img src='https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=".$qrCodeUrl."&choe=UTF-8' alt=''>" ?></p>
+<head>
+<link rel="stylesheet" href="style2.css">
 <form method="post">
-    <input type="text" name="code">
-    <button type="submit" name="submit">Submit</button>
-</form>
+    <input class="button2" type="submit" name="logout" value="UITLOGGEN">
+</form><br>
+    <div class="box">
+        <h2>Profielwerkstuk inlogsystemen</h2>
+        <h3>Gemaakt door Toine van Wonderen & Jesse Blom</h3>
+        <h4>6 vwo - Jan Van Egmond Lyceum</h4>
+        <h4>Begeleider Menno Merlijn (MLI)</h4>
+    </div><br>
+    <div class='box'>
+        <iframe src="PWS%20inlogsystemen%20-%20Toine%20&%20Jesse%20V2.pdf" width="100%" height="700px"></iframe>
+    </div>
+</head>
