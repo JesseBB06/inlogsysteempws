@@ -2,15 +2,13 @@
 <?php
 session_start();
 include 'connect.php';
-include 'vendor\autoload.php';
+include '../vendor/autoload.php';
 
 use PragmaRX\Google2FA\Google2FA;
 
 //Secret key aanmaken
 $google2fa = new Google2FA();
 $tfa = new RobThree\Auth\TwoFactorAuth('Pws');
- 
-
 
 //stap terug
 if(isset($_POST['terug'])){
@@ -60,7 +58,7 @@ if (isset($_POST['login'])) {
                     if($result){
                         session_unset();
                         $_SESSION['login'] = true;
-                        header("location: profiel.php");
+                        header("location: index.php");
                     }
                 }
 }else{

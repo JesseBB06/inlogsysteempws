@@ -45,11 +45,12 @@ if (isset($_POST['reset'])) {
       <form method="post" class="login-form">
         <input type="hidden" name="id">
         <p class="warning"><?php if(isset($error)){ echo $error;} ?></p>
-        <p class="success"><?php if(isset($success)){ echo $success;} ?></p>
+        <p class="success"><?php if(isset($success)){ echo $success;}else{ ?></p>
         <input type="text" name="email" placeholder="emailadres" required><br>
         <div class="g-recaptcha" data-sitekey="6LfYnigaAAAAALkaFhJP8h5lierWV1hL_b--OK1S"></div>
         <input class="button" type="submit" name="reset" value="Vraag nieuw wachtwoord aan">
           <p class="message">Al een account aangemaakt? <a href="login.php">Log in</a></p>
+          <?php } ?>
            </form>
             </div>
         </div>

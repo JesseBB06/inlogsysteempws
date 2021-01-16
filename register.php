@@ -4,7 +4,7 @@ session_start();
 include 'connect.php';
 
 
-include 'vendor\autoload.php';
+include '../vendor/autoload.php';
 
 use PragmaRX\Google2FA\Google2FA;
 
@@ -89,7 +89,7 @@ if(isset($_POST['verzend'])){
                     if($result){
                         session_unset();
                         $_SESSION['login'] = true;
-                        header("Location: profiel.php");
+                        header("Location: index.php");
                     }
                 }else{
                     $warning = "De code is onjuist";

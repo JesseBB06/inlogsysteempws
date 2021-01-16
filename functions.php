@@ -1,6 +1,10 @@
-<!--- Connectie met de database --->
 <?php
-include 'connect.php';
+function isLogin(){
+    if(isset($_SESSION['login']) and $_SESSION['login'] == true){
+        return true;
+    }
+    return false;
+}
 
 function randomstring()
 {
@@ -15,9 +19,10 @@ function randomstring()
 }
 
 function wachtwoordvergeten($emailadres){
-    $result = mysqli_query($link, "SELECT voornaam FROM account WHERE `emailadres`='$emailadres' LIMIT 1");
+    include 'connect.php';
+    $result = mysqli_query($link, "SELECT * FROM account WHERE `emailadres`='$emailadres' LIMIT 1");
     $user = mysqli_fetch_assoc($result);
-
+    $voornaam = $user['voornaam'];
     if (count($user)) {
         $code = randomstring();
         $codeGelijk = false;
@@ -29,12 +34,10 @@ function wachtwoordvergeten($emailadres){
                 $codeGelijk = true;
             } 
         }
-        $row = mysqli_fetch_array($result);
-        $voornaam = $row['voornaam'];
         
-        $message = "Hey $voornaam, \r\nMet deze link kan je een nieuw wachtwoord aanvragen.\r\n<a href='inlogveiligheid.nl/wachtwoordwijzigen.php?code=$code'></a>\r\nDit is een automatisch  bericht. Klopt het niet dat jij je wachtwoord hebt aangevraagd te wijzigen kan je dit negeren.\r\nLukt het niet de link te openen of gaat er iets anders mis, neem contact op met de beheerder.";
-        
-        if(mail("$emailadres", "Wachtwoord vergeten", "$message") && mysqli_query($link, "UPDATE account SET code = '$code' WHERE emailadres = '$emailadres'")){
+        $message = "Hey $voornaam, \r\nMet deze link kan je een nieuw wachtwoord aanvragen.\r\n inlogveiligheid.nl/wachtwoordwijzigen.php?code=$code' \r\nDit is een automatisch  bericht. Klopt het niet dat jij je wachtwoord hebt aangevraagd te wijzigen kan je dit negeren.\r\nLukt het niet de link te openen of gaat er iets anders mis, neem contact op met de beheerder. Deze link is voor 3 uur geldig.";
+        $tijd = date("Y-m-d H:i:s");
+        if(mail("$emailadres", "Wachtwoord vergeten", "$message") && mysqli_query($link, "UPDATE account SET code = '$code', tijd='$tijd' WHERE emailadres = '$emailadres'")){
             return true;
         }else{
             return false;
