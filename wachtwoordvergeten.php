@@ -5,7 +5,7 @@ include "functions.php";
 if (isset($_POST['reset'])) {
      if(isset($_POST['g-recaptcha-response']) && !empty($_POST['g-recaptcha-response']))
   {
-        $secret = '6LfYnigaAAAAAJry6gpl0xbxdqOLWN5WpIlbK65s';
+        $secret = 'HIER STOND DE SECRET RECAPTCHA KEY';
         $verifyResponse = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret='.$secret.'&response='.$_POST['g-recaptcha-response']);
         $responseData = json_decode($verifyResponse);
         if($responseData->success)
