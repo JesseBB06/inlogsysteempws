@@ -35,7 +35,7 @@ function wachtwoordvergeten($emailadres){
             } 
         }
         
-        $message = "Hey $voornaam, \r\nMet deze link kan je een nieuw wachtwoord aanvragen.\r\n inlogveiligheid.nl/wachtwoordwijzigen.php?code=$code' \r\nDit is een automatisch  bericht. Klopt het niet dat jij je wachtwoord hebt aangevraagd te wijzigen kan je dit negeren.\r\nLukt het niet de link te openen of gaat er iets anders mis, neem contact op met de beheerder. Deze link is voor 3 uur geldig.";
+        $message = "Hey $voornaam, \r\nMet deze link kan je een nieuw wachtwoord aanvragen.\r\n inlogveiligheid.nl/wachtwoordwijzigen.php?code=$code \r\nDit is een automatisch  bericht. Klopt het niet dat jij je wachtwoord hebt aangevraagd te wijzigen kan je dit negeren.\r\nLukt het niet de link te openen of gaat er iets anders mis, neem contact op met de beheerder. Deze link is voor 3 uur geldig.";
         $tijd = date("Y-m-d H:i:s");
         if(mail("$emailadres", "Wachtwoord vergeten", "$message") && mysqli_query($link, "UPDATE account SET code = '$code', tijd='$tijd' WHERE emailadres = '$emailadres'")){
             return true;
