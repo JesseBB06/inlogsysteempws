@@ -26,6 +26,6 @@ if(isset($_POST['logout'])){
         <h4>Begeleider Menno Merlijn (MLI)</h4>
     </div><br>
     <div class='box'>
-        <iframe src="PWS%20inlogsystemen%20-%20Toine%20&%20Jesse%20V2.pdf" width="100%" height="700px"></iframe>
+        <iframe src="PWS inlogsystemen - Toine & Jesse - definitieve versie.pdf" width="100%" height="700px"></iframe>
     </div>
 </body>
